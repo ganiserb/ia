@@ -53,14 +53,11 @@ class OchoProblem(object):
     def is_goal(self, state):
         return state == "012\n345\n678"
         
-    def result(self, state, action):
-        #row_0, column_0 = self.find_number(state, "0")
-        #row_action, column_action = self.find_number(state, action)
-        
+    def result(self, state, action):       
         a = state.replace("0", "x")
         b = a.replace(action, "0")
         c = b.replace("x", action)
-        return c 
+        return c
         
 
 class BreadthFirstSearch(object):
@@ -82,7 +79,6 @@ class BreadthFirstSearch(object):
 
             node = frontier.pop(0)
             explored.add(node.state)
-            
             for action in self.problem.actions(node.state):
                 child_state = self.problem.result(node.state, action)
                 child = Node(child_state, node)
