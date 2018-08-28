@@ -68,7 +68,7 @@ class OchoProblem(object):
     def is_goal(self, state):
         return state == "012\n345\n678"
         
-    def result(self, state, action):       
+    def result(self, state, action):
         a = state.replace("0", "x")
         b = a.replace(action, "0")
         c = b.replace("x", action)
