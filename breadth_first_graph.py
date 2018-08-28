@@ -1,3 +1,18 @@
+# ~ function BREADTH-FIRST-SEARCH(problem) returns a solution, or failure
+# ~ node ←a node with STATE = problem.INITIAL-STATE, PATH-COST = 0
+# ~ if problem.GOAL-TEST(node.STATE) then return SOLUTION(node)
+# ~ frontier ← a FIFO queue with node as the only element
+# ~ explored ← an empty set
+# ~ loop do
+    # ~ if EMPTY?(frontier ) then return failure
+    # ~ node ← POP(frontier ) /* chooses the shallowest node in frontier */
+    # ~ add node.STATE to explored
+    # ~ for each action in problem.ACTIONS(node.STATE) do
+        # ~ child ← CHILD-NODE(problem, node, action)
+        # ~ if child.STATE is not in explored or frontier then
+            # ~ if problem.GOAL-TEST(child.STATE) then return SOLUTION(child)
+            # ~ frontier ← INSERT(child,frontier )
+
 class Node(object):
     parent = None
     state = None
@@ -60,7 +75,7 @@ class OchoProblem(object):
         return c
         
 
-class BreadthFirstSearch(object):
+class BreadthFirstGraphSearch(object):
     problem = None
     
     def __init__(self, problem):
@@ -88,6 +103,34 @@ class BreadthFirstSearch(object):
                     frontier.append(child)
 
 
+class BreadthFirstGraphSearch(object):
+    problem = None
+    
+    def __init__(self, problem):
+        self.problem = problem
+    
+    def run(self):
+        node = Node(self.problem.initial)
+        if self.problem.is_goal(node.state):
+            return node
+        frontier = [node]
+        explored = set()
+
+        while True:
+            if not frontier:
+                raise Exception("Empty frontier. Solution not found")
+
+            node = frontier.pop(0)
+            explored.add(node.state)
+            for action in self.problem.actions(node.state):
+                child_state = self.problem.result(node.state, action)
+                child = Node(child_state, node)
+                if child.state not in explored or child.state not in [n.state for n in frontier]:
+                    if self.problem.is_goal(child.state):
+                        return child
+                    frontier.append(child)
+                    
+
 if __name__ == '__main__':
     problem = OchoProblem()
     # ~ s = problem.initial
@@ -97,7 +140,7 @@ if __name__ == '__main__':
     print("Initial:")
     print(problem.initial)
     
-    search = BreadthFirstSearch(problem)
+    search = BreadthFirstGraphSearch(problem)
     solution = search.run()
 
     print("Solution:")
