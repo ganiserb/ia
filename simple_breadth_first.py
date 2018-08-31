@@ -116,7 +116,7 @@ class OchoProblem(object):
     Definition of the 8 puzzle problem.
     In this case the state is represented as a string in which
     each newline (\n) divides the different rows. Number 0 represents
-    the blank sqare.
+    the blank square.
 
     The action is a string with the number that has to be swapped
     by the 0.
