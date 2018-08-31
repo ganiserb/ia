@@ -5,9 +5,10 @@ class Node(object):
     Represents a Node of the state space graph.
     Each node contains:
         a state representation.
-        a link to its parent node (except for the initial, which is None).
-        the action that was used to reach its state (exceptp for the initial
-        which is None.
+        a link to its parent node (except for the initial, which
+        should be None).
+        the action that was used to reach its state (except for the initial
+        which should be None).
     """
     parent = None
     state = None
