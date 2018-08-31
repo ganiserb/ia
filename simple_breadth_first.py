@@ -19,6 +19,11 @@ class Node(object):
         self.action = action
         
     def __repr__(self):
+        """
+        This method is used to draw a nice representation of the current
+        Node and all its parents. It is invoked by python whenever you
+        cast a Node instance to string.
+        """
         # Build a list with the path to the solution
         nodes = []
         node = self
