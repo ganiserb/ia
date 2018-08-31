@@ -1,20 +1,14 @@
-# Graph search
-# ~ function BREADTH-FIRST-SEARCH(problem) returns a solution, or failure
-# ~ node ←a node with STATE = problem.INITIAL-STATE, PATH-COST = 0
-# ~ if problem.GOAL-TEST(node.STATE) then return SOLUTION(node)
-# ~ frontier ← a FIFO queue with node as the only element
-# ~ explored ← an empty set
-# ~ loop do
-    # ~ if EMPTY?(frontier ) then return failure
-    # ~ node ← POP(frontier ) /* chooses the shallowest node in frontier */
-    # ~ add node.STATE to explored
-    # ~ for each action in problem.ACTIONS(node.STATE) do
-        # ~ child ← CHILD-NODE(problem, node, action)
-        # ~ if child.STATE is not in explored or frontier then
-            # ~ if problem.GOAL-TEST(child.STATE) then return SOLUTION(child)
-            # ~ frontier ← INSERT(child,frontier )
+#!/usr/bin/env python3
 
 class Node(object):
+    """
+    Represents a Node of the state space graph.
+    Each node contains:
+        a state representation.
+        a link to its parent node (except for the initial, which is None).
+        the action that was used to reach its state (exceptp for the initial
+        which is None.
+    """
     parent = None
     state = None
     action = None
@@ -42,6 +36,13 @@ class Node(object):
 
 
 class BreadthFirstTreeSearch(object):
+    """
+    Implementation of the Breadth First algorithm as tree search.
+
+    To use it, create an instance passing a problem instance as
+    a paramenter.
+    Call run() to find a solution or explode.
+    """
     problem = None
     
     def __init__(self, problem):
@@ -68,6 +69,15 @@ class BreadthFirstTreeSearch(object):
 
 
 class BreadthFirstGraphSearch(object):
+    """
+    Implementation of the Breadth First algorithm as graph search.
+    This is just TreeSearch, but with an "explored" set of states and
+    checks in place to make sure no state is repeated.
+
+    To use it, create an instance passing a problem instance as
+    a paramenter.
+    Call run() to find a solution or explode.
+    """
     problem = None
     
     def __init__(self, problem):
@@ -88,7 +98,7 @@ class BreadthFirstGraphSearch(object):
             explored.add(node.state)
             for action in self.problem.actions(node.state):
                 child_state = self.problem.result(node.state, action)
-                child = Node(child_state, node)
+                child = Node(child_state, node, action)
                 if child.state not in explored or child.state not in [n.state for n in frontier]:
                     if self.problem.is_goal(child.state):
                         return child
@@ -96,6 +106,15 @@ class BreadthFirstGraphSearch(object):
 
 
 class OchoProblem(object):
+    """
+    Definition of the 8 puzzle problem.
+    In this case the state is represented as a string in which
+    each newline (\n) divides the different rows. Number 0 represents
+    the blank sqare.
+
+    The action is a string with the number that has to be swapped
+    by the 0.
+    """
     #initial = "312\n045\n678"
     initial = "312\n065\n748"
     
@@ -142,17 +161,19 @@ class OchoProblem(object):
 
 
 if __name__ == '__main__':
+    # Instantiate the problem definition
     problem = OchoProblem()
-    # ~ s = problem.initial
-    # ~ print(problem.actions(s))
-    # ~ print(problem.result(s, "3"))
 
+    # Print the initial state just to see it
     print("Initial:")
     print(problem.initial)
-    
-    search = BreadthFirstTreeSearch(problem)
+
+    # Instantiate the search algorithm
+    search = BreadthFirstGraphSearch(problem)
+    # Make it run to search for a solution
     solution = search.run()
 
+    # Print the solution
     print("Solution:")
     print(solution)
     
